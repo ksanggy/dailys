@@ -1,18 +1,22 @@
 class Solution {
     public void moveZeroes(int[] nums) {
-        int[] resultArr = new int[nums.length];
-        int left = 0;
-        int right = nums.length - 1;
-        for (int i = 0; i < nums.length; i++) {
-            if(nums[i] != 0) {
-                resultArr[left] = nums[i];
+        if (nums.length == 1)
+            return;
+        int left = 0; // the non-zero index
+        
+        // this moves all the non-zero element to the front
+        for(int num : nums) {
+            if(num != 0) {
+                nums[left] = num;
                 left++;
             }
-            else {
-                resultArr[right] = nums[i];
-                right--;
-            }
         }
-        System.arraycopy(resultArr, 0, nums, 0, nums.length);   
+
+        // if left pointer is not at the end of the nums.length -> change the remaining elements to 0
+        // this is because you have already moved non-zero elements in the first loop
+        while(left != nums.length) {
+            nums[left] = 0;
+            left++;
+        }
     }
 }
