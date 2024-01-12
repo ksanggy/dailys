@@ -1,14 +1,16 @@
 class Solution {
     public boolean isAnagram(String s, String t) {
-       
-        Map<String, Long> sResult = Arrays.stream(s.toLowerCase().split(""))
-                .collect(Collectors.groupingBy(p -> p, Collectors.counting()));
-        
-        Map<String, Long> tResult =
-                Arrays.stream(t.toLowerCase().split(""))
-                        .collect(
-                                Collectors.groupingBy(w -> w, Collectors.counting())
-                        );
-        return sResult.equals(tResult);
+        if(s.length() != t.length())
+            return false;
+        Map<Character, Integer> characterFrequency = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            characterFrequency.put(s.charAt(i), characterFrequency.getOrDefault(s.charAt(i), 0) + 1);
+            characterFrequency.put(t.charAt(i), characterFrequency.getOrDefault(t.charAt(i), 0) - 1);
+        }
+        for (Character c : characterFrequency.keySet()) {
+            if(characterFrequency.get(c) != 0)
+                return false;
+        }
+        return true;
     }
 }
