@@ -1,20 +1,17 @@
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int p1 = m - 1; // pointer for nums1 of size m
-        int p2 = n - 1; // pointer for nums2 of size n
-        int p3 = m + n - 1;
+        int i = m - 1; // length of nums1 with actual values (the none 0s)
+        int j = n - 1; // length of nums2
+        int k = nums1.length - 1; // this the actual length of the merged array m + n
 
-        while(p2 >= 0) {
-            if(p1 >= 0 && nums1[p1] > nums2[p2]) {
-                nums1[p3] = nums1[p1];
-                p1--;
-                p3--;
-            }
-            else {
-                nums1[p3] = nums2[p2];
-                p3--;
-                p2--;
-            }
+        // The plan is to merge and place values from the end since the two input arrays are sorted
+        while(j >= 0) {
+            // if 'nums1' value is greater, then place the nums1 value in nums1[k--] index then decrement by 1
+            if(i >= 0 && nums1[i] > nums2[j])
+                nums1[k--] = nums1[i--];
+            // else, then place the nums2 value in nums1[k--] index then decrement by 1
+            else
+                nums1[k--] = nums2[j--];
         }
     }
 }
