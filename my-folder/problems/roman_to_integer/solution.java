@@ -1,34 +1,28 @@
 class Solution {
-    public int romanToInt(String s) {
+    static Map<Character, Integer> romanNumMap = new HashMap<>(
+            Map.of(
+                    'I', 1,
+                    'V', 5,
+                    'X', 10,
+                    'L', 50,
+                    'C', 100,
+                    'D', 500,
+                    'M', 1000
+            ));
+
+    public static int romanToInt(String s) {
         int sum = 0;
-        int prevValue = 0;
-        
-        for(int i = 0; i < s.length(); i++){
-            int currValue = convertRomanToNumber(s.charAt(i));
-            
-            //if prevValue is less than current value then it means it's one of the 3 special cases
-            if(prevValue < currValue){
-                sum -= prevValue;
-                sum += currValue - prevValue; //correct value added to total
-            }else {
-                sum += currValue;
+        int prev = 0;
+        for (int i = 0; i < s.toCharArray().length; i++) {
+            int currVal = romanNumMap.get(s.charAt(i));
+            if(prev < currVal) {
+                sum -= prev; // correct the wrongly added value from the sum
+                sum += currVal - prev; // add the correct value of the special cases
             }
-            prevValue = currValue; //setting of prevValue to be used for next value
+            else
+                sum += currVal;
+            prev = currVal; // update the prev value to current value
         }
         return sum;
-    }
-    
-    //converts roman numeral to actual int value
-    public int convertRomanToNumber(Character romanNum){
-        switch(romanNum){
-            case 'I' : return 1;
-            case 'V' : return 5;
-            case 'X' : return 10;
-            case 'L' : return 50;
-            case 'C' : return 100;
-            case 'D' : return 500;
-            case 'M' : return 1000;
-            default : throw new Error("Not valid roman numeral");    
-        }
     }
 }
