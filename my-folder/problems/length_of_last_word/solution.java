@@ -1,7 +1,12 @@
 class Solution {
     public int lengthOfLastWord(String s) {
-        s = s.trim();
-        if(s.length() == 0) return 0;
-        return s.length() - (s.lastIndexOf(" ") + 1);
+        String trimmedString = s.trim();
+        int lastSpaceIndex = trimmedString.lastIndexOf(' ');
+        int lastIndex = trimmedString.length() - 1;
+        if(lastSpaceIndex == -1)
+            return lastIndex + 1; // there is no space making the whole string a single word (the last word)
+        // 'lastSpaceIndex' will be just before the last word
+        else
+            return lastIndex - lastSpaceIndex;
     }
 }
