@@ -9,9 +9,9 @@ class Solution {
         int maxArea = 0;
         // 2. loop through while let < right to find the maximum amount of water container can hold
         while(left < right) {
-            int containerHeight = Math.min(height[left], height[right]);
+            int minHeight = Math.min(height[left], height[right]);
             int xAxisDistance = right - left;
-            maxArea = Math.max(maxArea, containerHeight * xAxisDistance);
+            maxArea = Math.max(maxArea, minHeight * xAxisDistance);
 
             // if left pointer element is less than or equal to right element then increment left
             if(height[left] <= height[right])
