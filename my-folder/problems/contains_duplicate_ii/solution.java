@@ -1,23 +1,19 @@
 class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-
-        for(var i = 0; i < nums.length; i++){
-            var value = nums[i];
-            if(map.containsKey(value)) {
-                int currIdx = i;
-                if(Math.abs(map.get(value) - currIdx) <= k) {
-                    System.gc();
-                    return true;
-                }
-                // map.get(value).add(i);
-                
-            }
-            // List<Integer> indeces = new ArrayList<>();
-            // indeces.add(i);
-            map.put(value, i);
+        // base case
+        if(nums.length < 2)
+            return false;
+        // set up variable to hold element index to element value
+        Map<Integer, Integer> valueIndexMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            // check if value exists in the 'valueIndexMap', and if it does do abs(i-j) calculation to check if <= k.
+            // return true if calculated difference in abs value is <= k
+            if(valueIndexMap.containsKey(num) && Math.abs(i - valueIndexMap.get(num)) <= k)
+                return true;
+            // place the current value as key and index as its value into the 'valueIndexMap'
+            valueIndexMap.put(num, i);
         }
-        System.gc();
         return false;
     }
 }
