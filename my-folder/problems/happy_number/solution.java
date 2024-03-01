@@ -1,23 +1,24 @@
 class Solution {
-    public boolean isHappy(int n) {
-        // 1. setup pointers
+    public static boolean isHappy(int n) {
+        // base case
+        if(n < 1)
+            return false;
         int slow = n;
         int fast = n;
-        // 2. process the pointers, having fast move 2 steps ahead (squaring twice)
         do {
-            slow = findSquare(slow); // move one step
-            fast = findSquare(findSquare(fast)); // move two steps ahead
-        } while(slow != fast); // found cycle
+            slow = findSquare(slow);
+            fast = findSquare(findSquare(fast));
+        } while( slow != fast );
         return slow == 1;
     }
 
-    private int findSquare(int num) {
+    private static int findSquare( int n ) {
         int sum = 0;
         int digit = -1;
-        while(num > 0) {
-            digit = num % 10;
+        while(n > 0) {
+            digit = n % 10;
             sum += digit * digit;
-            num /= 10;
+            n /= 10;
         }
         return sum;
     }
