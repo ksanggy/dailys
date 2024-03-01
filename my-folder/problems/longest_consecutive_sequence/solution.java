@@ -1,28 +1,23 @@
 class Solution {
     public int longestConsecutive(int[] nums) {
-        // base case
-        if(nums.length == 0)
+        if(nums.length < 1)
             return 0;
-        // variables
-        Set<Integer> set = new HashSet<>();
-        int longestConsecutive = 1;
-        // add all num in nums to the set to keep track of numbers
-        for(int num : nums)
-            set.add(num);
-        // loop through 'nums' to find for longest consecutive
-        for(int num : nums) {
-            // only start to find longest consecutive if num is the start of a sequence
-            if(!set.contains(num - 1)) {
-                int count = 1;
-                while(set.contains(num + 1)) { // check if next number of the sequence exists in the set
-                    num++;
-                    count++;
-                }
-                longestConsecutive = Math.max(longestConsecutive, count);
-            }
-            if(longestConsecutive > (nums.length / 2))
-                break;
+        // set up variable of hashmap to hold the element as the key and next number of element as value.
+        Map<Integer, Integer> numberMap = new TreeMap<>();
+        for (int num : nums) {
+            numberMap.put(num, num + 1);
         }
-        return longestConsecutive;
+
+        int counter = 0;
+        int answer = 0;
+        for (Map.Entry<Integer, Integer> entry : numberMap.entrySet()) {
+            if(numberMap.containsKey(entry.getValue()))
+                counter++;
+            else {
+                answer = Math.max(answer, counter + 1);
+                counter = 0;
+            }
+        }
+        return answer;
     }
 }
