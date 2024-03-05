@@ -1,27 +1,35 @@
 class Solution {
-    public int evalRPN(String[] tokens) {
-        // go through the tokens and add to stack until you hit operand (+, -, *, /)
-        // resolve the operand by popping elements from the stack (stack will only hold the operators)
-        Stack<Integer> operators = new Stack<>();
-        for(String token : tokens) {
-            if(token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")) {
-                int operator1 = operators.pop();
-                int operator2 = operators.pop();
-                operators.add(calculate(operator1, operator2, token));
+    public static int evalRPN(String[] tokens) {
+        // base case
+        if(tokens.length < 1)
+            return 0;
+        // set up stack ds to hold the integer values to be popped later when operator is hit
+        Stack<Integer> stack = new Stack<>();
+        // loop through
+        for (String token : tokens) {
+            if(isOperator(token)) {
+                int operand2 = stack.pop();
+                int operand1 = stack.pop();
+                int value = evaluate(operand1, operand2, token);
+                stack.push(value);
             }
             else
-                operators.add(Integer.parseInt(token));
+                stack.push(Integer.parseInt(token));
         }
-        return operators.pop();
+        return stack.isEmpty() ? 0 : stack.pop();
     }
 
-    private static int calculate( int operator1, int operator2, String operand ) {
-        return switch (operand) {
-            case "+" -> operator2 + operator1;
-            case "-" -> operator2 - operator1;
-            case "*" -> operator2 * operator1;
-            case "/" -> operator2 / operator1;
+    private static int evaluate(int op1, int op2, String operator) {
+        return switch (operator) {
+            case "/" -> op1 / op2;
+            case "*" -> op1 * op2;
+            case "+" -> op1 + op2;
+            case "-" -> op1 - op2;
             default -> 0;
         };
+    }
+
+    private static boolean isOperator( String token) {
+        return token.equals("/") || token.equals("*") || token.equals("+") || token.equals("-");
     }
 }
