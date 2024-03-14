@@ -10,28 +10,32 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        if(list1 == null) return list2;
-        if(list2 == null) return list1;
-        // 1. set up init variable 'mergedList'
-        ListNode mergedList = new ListNode(0);
-        ListNode head = mergedList;
-        // 2. loop through to compare each nodes values
+        // base case 
+        if(list1 == null)
+            return list2;
+        if(list2 == null)
+            return list1;
+
+        ListNode temp = new ListNode(-1);
+        ListNode result = temp;
+
         while(list1 != null && list2 != null) {
-            if(list1.val > list2.val) {
-                head.next = list2;
-                list2 = list2.next;
-            } else {
-                head.next = list1;
+            int val1 = list1.val;
+            int val2 = list2.val;
+            if(val1 < val2) {
+                temp.next = list1;
                 list1 = list1.next;
+            } else {
+                temp.next = list2;
+                list2 = list2.next;
             }
-            head = head.next;
+            temp = temp.next;
         }
 
-        // 3. check which list reached the end first
         if(list1 == null)
-            head.next = list2;
+            temp.next = list2;
         else
-            head.next = list1;
-        return mergedList.next; // since we have a dummy of val 0 at head
+            temp.next = list1;
+        return result.next;
     }
 }
