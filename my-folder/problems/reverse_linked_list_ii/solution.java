@@ -10,9 +10,10 @@
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-                ListNode current = head;
+        ListNode current = head;
         ListNode prev = null;
-        // 1. skip until node index is at left (here loop until left - 1 because we wanna stop before the actual node that need reversing)
+        // 1. skip until node index is at left
+        // (here loop until left - 1 because we want to stop before the actual node that need reversing)
         for(int i = 0; current != null && i < left - 1; i++) {
             prev = current;
             current = current.next;
@@ -35,7 +36,9 @@ class Solution {
         else
             head = prev;
         // 4. connect the last part
-        lastNodeOfSublist.next = current;
+        if (lastNodeOfSublist != null) {
+            lastNodeOfSublist.next = current;
+        }
 
         return head;
     }
