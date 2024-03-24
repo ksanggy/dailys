@@ -14,7 +14,7 @@ class Solution {
             return head;
 
         // 1. set a dummy node to deal with edge cases of first head value being repeated
-        ListNode dummy = new ListNode(-200);
+        ListNode dummy = new ListNode(-200); // FAILED CASE CAUSED BY dummy.val being set to 0. CONSTRAINT says -100 <= node.val <= 100
         dummy.next = head;
         // 2. set two pointers vars for two pointers approach
         ListNode slow = dummy;
