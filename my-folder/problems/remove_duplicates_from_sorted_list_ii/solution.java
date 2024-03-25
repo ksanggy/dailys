@@ -13,27 +13,21 @@ class Solution {
         if(head == null || head.next == null)
             return head;
 
-        // 1. set a dummy node to deal with edge cases of first head value being repeated
-        ListNode dummy = new ListNode(-200); // FAILED CASE CAUSED BY dummy.val being set to 0. CONSTRAINT says -100 <= node.val <= 100
+        // set two variables to track previous node and a current node
+        ListNode dummy = new ListNode(-200);
         dummy.next = head;
-        // 2. set two pointers vars for two pointers approach
-        ListNode slow = dummy;
-        ListNode fast = dummy.next;
-        ListNode prev = dummy; // anchor node to go back to if duplicates happen
-        // 3. loop through to remove duplicates
-        while(fast != null) {
-            if(slow.val == fast.val) {
-                while(fast != null && fast.val == slow.val) { // skip nodes until non duplicate values is found
-                    fast = fast.next;
-                }
-                slow = prev; // set back slow to anchor node to remove duplicate
-                slow.next= fast; // set slow.next to fast node to skip all duplicate nodes
+        ListNode temp = dummy;
+        ListNode current = head;
+
+        while(current != null && current.next != null) {
+            if(current.val == current.next.val) {
+                while(current.next != null && current.val == current.next.val)
+                    current = current.next;
+                temp.next = current.next;
             }
-            // when values are unique move the pointers
-            prev = slow; // set new anchor node to slow since it isn't a duplicate
-            slow = slow.next;
-            if(fast != null)
-                fast = fast.next;
+            else
+                temp = temp.next;
+            current = current.next;
         }
         return dummy.next;
     }
