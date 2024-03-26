@@ -10,10 +10,11 @@
  */
 class Solution {
     public ListNode rotateRight(ListNode head, int k) {
-        if (head == null || head.next == null || k <= 0)
+        // base case
+        if(head == null || head.next == null)
             return head;
 
-        // 1. find the length of the list
+        // find the length of list to use to calculate how many times to skip nodes
         ListNode lastNode = head;
         int length = 1;
         while(lastNode.next != null) {
@@ -21,18 +22,18 @@ class Solution {
             length++;
         }
 
-        // 2. connect the lastNode to the head of the list -> this creates a circular list
+        // set lastNode.next to head to make the list a cyclic linked list
         lastNode.next = head;
-        k %= length; // number of rotations to do
-        int skipLength = length - k;
-        ListNode lastNodeOfRotatedList = head;
-        for(int i = 0; i < skipLength - 1; i++)
-            lastNodeOfRotatedList = lastNodeOfRotatedList.next;
 
-        // 3. set the lastNodeOfRotatedList.next to the head as it is now the head of the rotated list
-        head = lastNodeOfRotatedList.next;
-        // 4. set the lastNodeOfRotatedList.next to null as lastNodeOfRotatedList is the end of the sublist
-        lastNodeOfRotatedList.next = null;
+        // calculate how many nodes to skip to find the lastNodeOf
+        k %= length;
+        int skipCount = length - k;
+        ListNode endNode = head;
+        for (int i = 0; i < skipCount - 1; i++)
+            endNode = endNode.next;
+        // set head to endNode.next as the next node of endNode will be the new head
+        head = endNode.next;
+        endNode.next = null;
         return head;
     }
 }
