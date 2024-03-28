@@ -18,7 +18,7 @@ class Solution {
         ListNode dummyA = before;
         ListNode after = new ListNode(-200);
         ListNode dummyB = after;
-        // 2. loop through to partition list
+        // 2. loops through to the partition list
         while(head != null) {
             if(head.val < x) {
                 dummyA.next = head;
