@@ -13,15 +13,14 @@
  *     }
  * }
  */
-class Solution {  
-   public boolean isSameTree(TreeNode p, TreeNode q) {
-        if(p == null && q == null) return true;
-        if(p == null || q == null) return false;
-        if(p.val == q.val)
-            return isSameTree(p.left, q.right) && isSameTree(p.right, q.left);
-        return false;
-    }
+class Solution {
     public boolean isSymmetric(TreeNode root) {
-        return isSameTree(root.right, root.left);
+        return dfs(root.left, root.right);
+    }
+
+    private boolean dfs(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+        return left.val == right.val && dfs(left.left, right.right) && dfs(left.right, right.left);
     }
 }
