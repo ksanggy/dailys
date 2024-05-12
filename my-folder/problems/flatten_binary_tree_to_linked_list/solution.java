@@ -16,20 +16,18 @@
 class Solution {
     public void flatten(TreeNode root) {
         if (root == null) return;
-        Queue<TreeNode> queue = new LinkedList<>();
-        dfs(root, queue);
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            if(queue.peek() != null)
-                node.right = queue.peek();
-            node.left = null;
+        TreeNode curr = root;
+        while (curr != null) {
+            if (curr.left != null) {
+                TreeNode runner = curr.left;
+                while (runner.right != null) {
+                    runner = runner.right;
+                }
+                runner.right = curr.right;
+                curr.right = curr.left;
+                curr.left = null;
+            }
+            curr = curr.right;
         }
-    }
-
-    private static void dfs( TreeNode root, Queue<TreeNode> queue ) {
-        if(root == null) return;
-        queue.add(root);
-        dfs(root.left, queue);
-        dfs(root.right, queue);
     }
 }
