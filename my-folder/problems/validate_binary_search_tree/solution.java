@@ -1,12 +1,12 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
+ *     long val;
  *     TreeNode left;
  *     TreeNode right;
  *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *     TreeNode(long val) { this.val = val; }
+ *     TreeNode(long val, TreeNode left, TreeNode right) {
  *         this.val = val;
  *         this.left = left;
  *         this.right = right;
@@ -14,17 +14,24 @@
  * }
  */
 class Solution {
-    public static boolean isValidBST(TreeNode root) {
-        return validBSTRecursive(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    private TreeNode prev;
+    private boolean isValid = true;
+    public boolean isValidBST(TreeNode root) {
+        if (root == null)
+            return true;
+        validBSTHelper(root);
+        return isValid;
     }
 
-    private static boolean validBSTRecursive( TreeNode node, long low, long high ) {
-        // 0. base case -
-        if(node == null)
-            return true;
-        // 1. check for validity
-        if(!(node.val > low) || !(node.val < high ))
-            return false;
-        return validBSTRecursive(node.left, low, node.val) && validBSTRecursive(node.right, node.val, high);
+    private void validBSTHelper( TreeNode node ) {
+        if (node == null)
+            return;
+        validBSTHelper(node.left);
+        if(prev != null && node.val <= prev.val) {
+            isValid = false;
+            return;
+        }
+        prev = node;
+        validBSTHelper(node.right);
     }
 }
