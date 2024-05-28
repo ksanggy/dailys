@@ -23,19 +23,20 @@ class Solution {
         if(node == null){
             return null;
         }
-        HashMap<Node,Node> nodeList = new HashMap<>();
-        return dfs(node,nodeList);
-    }
-    
-    public Node dfs(Node node, Map<Node,Node> nodeList){
-        if(nodeList.get(node)!= null){
-            return nodeList.get(node);
+        Map<Node,Node> visited = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(node);
+        visited.put(node, new Node(node.val));
+        while(!queue.isEmpty()){
+            Node curr = queue.poll();
+            for(Node neighbour : curr.neighbors){
+                if(!visited.containsKey(neighbour)){
+                    visited.put(neighbour, new Node(neighbour.val));
+                    queue.add(neighbour);
+                }
+                visited.get(curr).neighbors.add(visited.get(neighbour));
+            }
         }
-        Node newNode = new Node(node.val);
-        nodeList.put(node, newNode);
-        for(Node n : node.neighbors){
-            newNode.neighbors.add(dfs(n, nodeList));
-        }
-        return nodeList.get(node);
+        return visited.get(node);
     }
 }
