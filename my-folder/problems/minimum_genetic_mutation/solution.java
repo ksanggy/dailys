@@ -1,55 +1,43 @@
 class Solution {
-    class Pair<K, V> {
-    private K key;
-    private V value;
+    public int minMutation(String start, String end, String[] bank) {
+        Queue<String> q = new LinkedList<>();   // For BFS
+        Set<String> visited = new HashSet<>();  // To detect cycles/ loops
 
-    public Pair(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
+        int mutations=0;                        //To track each level in BFS
+        q.add(start);                       //Add initial startGene to queue
+        visited.add(start);                 //Add initial startGene to visited set
 
-    public K getKey() {
-        return key;
-    }
+        while(!q.isEmpty()){
+            int len = q.size();
 
-    public V getValue() {
-        return value;
-    }
-}
-    public int minMutation(String startGene, String endGene, String[] bank) {
-        Set<String> bankSet = new HashSet<>();
-        for (String gene : bank) {
-            bankSet.add(gene);
-        }
+            for(int i=0; i<len; i++){
 
-        Map<Character, String> mutationMap = new HashMap<>();
-        mutationMap.put('A', "TCG");
-        mutationMap.put('T', "ACG");
-        mutationMap.put('C', "ATG");
-        mutationMap.put('G', "ATC");
-
-
-        Deque<Pair<String, Integer>> queue = new LinkedList<>();
-        queue.offer(new Pair<>(startGene, 0));
-        while (!queue.isEmpty()) {
-            Pair<String, Integer> current = queue.poll();
-            String currentGene = current.getKey();
-            int currentGeneCount = current.getValue();
-
-            if(endGene.equals(currentGene))
-                return currentGeneCount;
-
-            for (int i = 0; i < currentGene.length(); i++) {
-                for (char mutation : mutationMap.get(currentGene.charAt(i)).toCharArray()) {
-                    String mutatedGene = currentGene.substring(0, i) + mutation + currentGene.substring(i + 1);
-
-                    if(bankSet.contains(mutatedGene)) {
-                        queue.offer(new Pair<>(mutatedGene, currentGeneCount + 1));
-                        bankSet.remove(mutatedGene);
-                    }
+                String checkGene = q.poll();
+                if(checkGene.equals(end))
+                    return mutations;
+                
+                for(String gene : bank){
+                    int count  = calculateGeneChange(checkGene, gene);
+                    if(count == 1 && !visited.contains(gene)){
+                        q.add(gene);
+                        visited.add(gene);
+                    }    
                 }
             }
+            mutations++;
         }
-        return -1; // return -1 if no mutation leads to the end gene
+        return -1;
+
+    }
+
+    public int calculateGeneChange(String a, String b){
+
+        int count = 0;
+        for(int i=0; i<8; i++){
+            if(a.charAt(i) != b.charAt(i))
+                count++;
+        }
+        return count;
+
     }
 }
