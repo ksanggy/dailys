@@ -1,17 +1,12 @@
 class Solution {
     public String reverseWords(String s) {
-        Stack<String> reversedWords =new Stack<>();
-        String[] splitWords = s.split(" ");
-        for (String word : splitWords) {
-            if(word.isBlank())
-                continue;
-            reversedWords.add(word);
+        Deque<String> stack = new ArrayDeque<>();
+        String[] splittedString = s.trim().split(" ");
+
+        for (String word : splittedString) {
+            if(!word.isBlank())
+                stack.push(word);
         }
-        StringBuilder result = new StringBuilder();
-        while(!reversedWords.isEmpty()) {
-            result.append(" ");
-            result.append(reversedWords.pop());
-        }
-        return result.toString().trim();
+        return String.join(" ", stack);
     }
 }
