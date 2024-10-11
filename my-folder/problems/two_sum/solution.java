@@ -1,15 +1,17 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        // base case
-        if(nums.length < 2)
-            return new int[] {};
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            int diff = target - nums[i];
-            if(map.containsKey(diff))
-                return new int[] {i, map.get(diff)};
-            map.put(nums[i], i);
+        // no need to validate the input arr since length is always greater than or equal to 2.
+        // and one valid answer always exists.
+
+        // we use complements to check if it already exists in the hashmap of nums[i] with index i as value.
+        Map<Integer, Integer> hm = new HashMap<>();
+        for(int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            // check if complement exists in hashmap, return indices if exists
+            if(hm.containsKey(complement))
+                return new int[] {hm.get(complement), i};
+            hm.put(nums[i], i);
         }
-        return new int[] {};
+        return new int[]{};
     }
 }
