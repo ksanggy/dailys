@@ -1,16 +1,23 @@
 class Solution {
     public String mergeAlternately(String word1, String word2) {
-        StringBuilder sb = new StringBuilder();
-        int word1Length = word1.length() - 1;
-        int word2Length = word2.length() - 1;
-
-        for(int i = 0; i <= Math.max(word1Length, word2Length); i++) {
-            if(i <= word1Length)
-                sb.append(word1.charAt(i));
-            if(i <= word2Length)
-                sb.append(word2.charAt(i));
-        }
+        int pointer1 = 0;
+        int pointer2 = 0;
+        char[] word1Chars = word1.toCharArray();
+        char[] word2Chars = word2.toCharArray();
+        StringBuilder mergedSB = new StringBuilder();
         
-        return sb.toString();
+        while(pointer1 < word1Chars.length && pointer2 < word2Chars.length) {
+            mergedSB.append(word1Chars[pointer1]);
+            mergedSB.append(word2Chars[pointer2]);
+            pointer1++;
+            pointer2++;
+        }
+
+        if(pointer1 < word1Chars.length)
+            mergedSB.append(word1.substring(pointer1));
+        if(pointer2 < word2Chars.length)
+            mergedSB.append(word2.substring(pointer2));
+        
+        return mergedSB.toString();
     }
 }
