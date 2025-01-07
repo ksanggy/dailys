@@ -1,22 +1,21 @@
 class Solution {
+    // Optimal solution for both space and time
     public void moveZeroes(int[] nums) {
-        if (nums.length == 1)
-            return;
-        int left = 0; // the non-zero index
-        
-        // this moves all the non-zero element to the front
-        for(int num : nums) {
-            if(num != 0) {
-                nums[left] = num;
-                left++;
-            }
+        // tracking the last non zero idx (front of arr)
+        int lastNonZeroIdx = 0;
+        // loop through nums and just sawp the non zero to the correct idx using lastNonZeroIdx
+        // which is the beginning of the input arr.
+        // we are also doing an in-place swap 
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] != 0) {
+                swap(nums, lastNonZeroIdx++, i);
+            }       
         }
+    } 
 
-        // if left pointer is not at the end of the nums.length -> change the remaining elements to 0
-        // this is because you have already moved non-zero elements in the first loop
-        while(left != nums.length) {
-            nums[left] = 0;
-            left++;
-        }
+    private void swap(int[] nums, int x, int y) {
+        int temp = nums[y];
+        nums[y] = nums[x];
+        nums[x] = temp;
     }
 }
