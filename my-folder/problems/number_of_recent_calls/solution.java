@@ -1,19 +1,25 @@
 class RecentCounter {
-    LinkedList<Integer> slideWindow;
+
+    private Queue<Integer> recentCounter;
 
     public RecentCounter() {
-        this.slideWindow = new LinkedList<Integer>();
+        recentCounter = new LinkedList<>();
     }
 
+    // requirement:
+    // 1. return number of requests that has "HAPPENED" in the past 3K ms (inclusive of new request)
+        // [t - 3K , t]
+    // 2. GUARANTEED every call to ping uses strictly larger value of t than prev call (the catch)
+    // Intuition:
+        // using of queue data structure and actually removing the element whenever it is not in range
     public int ping(int t) {
-        // step 1). append the current call
-        this.slideWindow.addLast(t);
+        recentCounter.add(t);
 
-        // step 2). invalidate the outdated pings
-        while (this.slideWindow.getFirst() < t - 3000)
-            this.slideWindow.removeFirst();
-
-        return this.slideWindow.size();
+        // we check the lower bound as requirement says upperbound the inclusive of the new t
+        while(recentCounter.peek() < t - 3000)
+            recentCounter.poll();
+        
+        return recentCounter.size();
     }
 }
 
