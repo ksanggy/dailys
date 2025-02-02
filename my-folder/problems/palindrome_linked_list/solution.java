@@ -9,39 +9,39 @@
  * }
  */
 class Solution {
-    public static boolean isPalindrome(ListNode head) {
-        if(head == null || head.next == null) return true;
-        ListNode middle = findMiddleNode(head);
-        ListNode secondHalfHead = reverseLinkedList(middle);
-        ListNode copySecondHalfHead = secondHalfHead;
-        while(head != null && secondHalfHead != null) {
-            if(head.val != secondHalfHead.val) break;
-            head = head.next;
-            secondHalfHead = secondHalfHead.next;
-        }
-        reverseLinkedList(copySecondHalfHead);
-        return head == null || secondHalfHead == null;
-    }
+    public boolean isPalindrome(ListNode head) {
+        // null is considered a palindrome
+        if(head == null || head.next == null)
+            return true;
 
-    private static ListNode reverseLinkedList( ListNode head ) {
-        ListNode prev = null;
-        while(head != null){
-            ListNode next = head.next;
-            head.next = prev;
-            prev = head;
-            head = next;
-        }
-        return prev;
-    }
-
-    private static ListNode findMiddleNode( ListNode head ) {
-        ListNode slow = head;
-        ListNode fast = head;
-        // find middle node
+        // looking for the middle node of the linkedlist to use later for reversing second half of the list
+        ListNode tempHead = head;
+        ListNode midNode = tempHead;
+        ListNode fast = tempHead.next.next;
         while(fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+                midNode = midNode.next;
+                fast = fast.next.next;
         }
-        return slow;
+
+        // reverse the second half of the list
+        ListNode prev = null;
+        ListNode curr = midNode.next;
+        while(curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // check if palindrome by comparing the first half value to second half value
+        ListNode p1 = head;
+        ListNode p2 = prev;
+        while(p2 != null) {
+            if(p2.val != p1.val)
+                return false;
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return true;
     }
 }
