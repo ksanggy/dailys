@@ -1,41 +1,40 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode() {}
- * TreeNode(int val) { this.val = val; }
- * TreeNode(int val, TreeNode left, TreeNode right) {
- * this.val = val;
- * this.left = left;
- * this.right = right;
- * }
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        List<List<Integer>> result = new ArrayList<>();
-        // base case
-        if (root == null)
-            return result;
-        List<Integer> path = new ArrayList<>();
-        findPathDFS(root, targetSum, path, result);
-        return result;
+        List<List<Integer>> paths = new ArrayList<>();
+        List<Integer> currPath = new ArrayList<>();
+        dfs(root, targetSum, currPath, paths);
+        return paths;
     }
 
-    private static void findPathDFS(TreeNode root, int targetSum, List<Integer> path, List<List<Integer>> result) {
-        // base case
-        if (root == null)
+    private void dfs(TreeNode node, int target, List<Integer> currPath, List<List<Integer>> paths) {
+        if(node == null)
             return;
-        path.add(root.val);
-        if (root.left == null && root.right == null && targetSum == root.val) {
-            result.add(new ArrayList<>(path));
-        } else {
-            findPathDFS(root.left, targetSum - root.val, path, result);
-            findPathDFS(root.right, targetSum - root.val, path, result);
-        }
+        target -= node.val;
+        currPath.add(node.val);
 
-        path.remove(path.size() - 1);
+        if(node.left == null && node.right == null && target == 0)
+            paths.add(new ArrayList(currPath));
+
+        if(node.left != null)
+            dfs(node.left, target, currPath, paths);
+        if(node.right != null)
+            dfs(node.right, target, currPath, paths);
+
+        currPath.remove(currPath.size() - 1);
     }
 }
